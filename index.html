@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子产品平衡使用 · 家长工作坊</title>
+<style>
+  :root{
+    --bg:#fbfaf7; --bg2:#f0ede5; --navy:#1e3a6e; --navy-d:#16305c; --navy-l:#2e5290;
+    --crimson:#a02c2c; --crimson-d:#8a2424;
+    --ink:#253044; --ink2:#566173; --line:#dcd9ce; --hair:#e6e3da;
+    --a1:#1e3a6e; --a2:#2e5290; --a3:#a02c2c; --a4:#50709e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);line-height:1.75;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px 80px;}
+
+  nav{position:sticky;top:0;z-index:50;
+    background:rgba(251,250,247,.82);backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px);
+    padding:0 36px;display:flex;align-items:center;justify-content:space-between;min-height:64px;
+    border-bottom:1px solid rgba(30,58,110,.13);}
+  nav .brand{display:flex;flex-direction:column;line-height:1.15;padding:6px 0;}
+  nav .brand .b-sub{font-size:8.5px;letter-spacing:3.5px;color:#9aa3b2;font-weight:600;}
+  nav .brand .b-main{font-family:"Songti SC","STSong",serif;font-weight:700;font-size:17px;letter-spacing:3px;color:var(--navy);}
+  nav .links{display:flex;align-items:center;gap:2px;}
+  nav a{color:#5a6472;text-decoration:none;font-size:12.5px;letter-spacing:2px;padding:8px 13px;position:relative;white-space:nowrap;transition:color .18s;}
+  nav a::after{content:"";position:absolute;left:13px;right:13px;bottom:2px;height:1px;background:var(--crimson);transform:scaleX(0);transition:transform .22s;}
+  nav a:hover{color:var(--navy);}
+  nav a:hover::after{transform:scaleX(1);}
+  @media(max-width:640px){nav .links{display:none;}}
+
+  .hero{text-align:center;padding:64px 0 34px;}
+  .eyebrow{letter-spacing:6px;color:var(--crimson);font-size:11px;font-weight:600;text-transform:uppercase;}
+  .hero .rule{width:56px;height:2px;background:var(--crimson);margin:18px auto;}
+  .hero h1{font-family:"Songti SC","STSong","STKaiti",serif;font-size:40px;letter-spacing:6px;margin:6px 0 12px;font-weight:700;color:var(--navy);}
+  .hero .sub{font-size:14.5px;color:var(--ink2);letter-spacing:2px;}
+  .meta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px;font-size:12px;color:var(--ink2);}
+  .meta span{background:rgba(255,255,255,.7);border:1px solid var(--hair);border-radius:100px;padding:6px 18px;letter-spacing:1px;}
+  .meta b{color:var(--navy);font-weight:600;}
+
+  .agenda{max-width:720px;margin:34px auto 0;background:rgba(255,255,255,.75);border:1px solid var(--navy);border-radius:14px;padding:22px 28px;position:relative;}
+  .agenda::after{content:"";position:absolute;inset:5px;border:1px solid var(--hair);border-radius:10px;pointer-events:none;}
+  .agenda h3{font-family:"Songti SC",serif;color:var(--navy);font-size:13px;letter-spacing:4px;margin-bottom:12px;text-align:center;}
+  .agenda .row{display:flex;gap:12px;font-size:13px;padding:6px 0;color:var(--ink2);align-items:baseline;border-bottom:1px dashed var(--hair);}
+  .agenda .row:last-child{border-bottom:none;}
+  .agenda .t{font-weight:700;color:var(--crimson);white-space:nowrap;min-width:58px;letter-spacing:1px;}
+
+  .sec{margin-top:44px;}
+  .act{border:1px solid var(--hair);border-radius:14px;background:rgba(255,255,255,.75);overflow:hidden;margin-bottom:18px;box-shadow:0 1px 2px rgba(30,58,110,.05);}
+  .act .a-head{display:flex;align-items:center;gap:16px;padding:18px 24px;cursor:pointer;user-select:none;transition:background .15s;}
+  .act .a-head:hover{background:rgba(255,255,255,.95);}
+  .act .a-num{font-family:"Songti SC",serif;font-size:22px;font-weight:700;width:46px;height:46px;line-height:46px;text-align:center;color:#fff;border-radius:12px;flex-shrink:0;}
+  .act .a-tt{flex:1;}
+  .act .a-tt .t{font-size:16.5px;font-weight:700;letter-spacing:.5px;color:var(--navy);}
+  .act .a-tt .meta{font-size:11.5px;color:var(--ink2);margin-top:2px;letter-spacing:1px;display:block;}
+  .act .a-ar{color:var(--navy);font-size:20px;transition:transform .2s;}
+  .act.open .a-ar{transform:rotate(90deg);}
+  .act .a-body{display:none;padding:8px 24px 24px;border-top:1px solid var(--hair);}
+  .act.open .a-body{display:block;}
+  .n1 .a-num{background:var(--a1);}
+  .n2 .a-num{background:var(--a2);}
+  .n3 .a-num{background:var(--a3);}
+  .n4 .a-num{background:var(--a4);}
+
+  .goal{font-size:13px;color:var(--navy);font-weight:600;margin:14px 0 10px;letter-spacing:.5px;padding-left:12px;border-left:2px solid var(--crimson);}
+  .subhead{font-size:12.5px;font-weight:700;color:var(--navy);letter-spacing:2px;margin:18px 0 8px;}
+  .subhead::before{content:"▍";color:var(--crimson);margin-right:6px;}
+  .pt{font-size:13px;color:var(--ink2);line-height:1.85;padding:2px 0;}
+  .pt b{color:var(--ink);}
+  .src{display:inline-block;font-size:9.5px;color:var(--navy);background:#e9eef6;border-radius:8px;padding:1px 7px;margin-left:6px;font-weight:600;letter-spacing:.5px;vertical-align:1px;}
+
+  .dev-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+  .dev-table th{background:var(--navy);color:#fff;padding:9px 10px;font-weight:600;letter-spacing:1px;font-size:11.5px;}
+  .dev-table td{border:1px solid var(--hair);padding:9px 11px;vertical-align:top;line-height:1.7;background:rgba(255,255,255,.6);}
+  .dev-table td.age{font-weight:700;color:var(--navy);width:80px;white-space:nowrap;}
+
+  .factor{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px;}
+  @media(max-width:720px){.factor{grid-template-columns:1fr;}}
+  .factor .f{border-radius:14px;padding:18px;color:#fff;}
+  .factor .f h4{font-size:15px;font-family:"Songti SC",serif;margin-bottom:10px;letter-spacing:1px;}
+  .factor .f ul{margin-left:16px;font-size:12px;line-height:1.8;opacity:.96;}
+  .factor .f.int{background:var(--navy-l);}
+  .factor .f.fam{background:var(--crimson);}
+  .factor .f.soc{background:var(--navy-d);}
+  .factor .f .s{display:block;font-size:10px;opacity:.78;margin-top:2px;}
+
+  .redflags{border:1px solid #d0a099;border-radius:14px;background:#fbf1ef;padding:18px 22px;margin-top:18px;}
+  .redflags h4{color:var(--crimson);font-size:15px;margin-bottom:12px;font-family:"Songti SC",serif;letter-spacing:1px;}
+  .flag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:720px){.flag-grid{grid-template-columns:1fr;}}
+  .flag .fh{font-weight:700;font-size:13px;margin-bottom:8px;color:var(--crimson);letter-spacing:1px;}
+  .flag ul{margin-left:0;font-size:12px;color:var(--ink2);line-height:1.75;list-style:none;}
+  .flag ul li{padding:3px 0 3px 18px;position:relative;}
+  .flag ul li::before{content:"🚩";position:absolute;left:0;font-size:10px;top:6px;}
+  .flag-note{font-size:11.5px;color:var(--crimson);margin-top:14px;font-weight:600;padding-top:10px;border-top:1px dashed #d9b6b0;}
+
+  .biblio{background:rgba(255,255,255,.75);border:1px solid var(--navy);border-radius:14px;padding:24px 28px;margin-top:10px;position:relative;}
+  .biblio::after{content:"";position:absolute;inset:5px;border:1px solid var(--hair);border-radius:10px;pointer-events:none;}
+  .biblio .b{margin-bottom:14px;font-size:13px;color:var(--ink2);line-height:1.8;position:relative;z-index:1;}
+  .biblio .b b{color:var(--navy);font-size:14px;}
+  .biblio .b .used{font-size:11px;color:var(--crimson);}
+  .biblio .b .used b{color:var(--crimson);font-size:11px;}
+
+  footer{background:var(--navy-d);color:#b9c6dd;padding:34px 0;margin-top:60px;text-align:center;font-size:12.5px;line-height:2;letter-spacing:1px;border-top:3px solid var(--crimson);}
+  footer b{color:#e0a9a2;}
+  .printbar{position:fixed;bottom:22px;right:22px;z-index:50;}
+  .printbar button{background:var(--navy);border:1px solid var(--crimson);color:#fff;font-weight:600;padding:11px 22px;border-radius:100px;cursor:pointer;font-size:13px;letter-spacing:1px;box-shadow:0 6px 20px rgba(22,48,92,.3);transition:all .15s;}
+  .printbar button:hover{background:var(--crimson);border-color:var(--crimson);}
+
+  /* ===== 内嵌材料 ===== */
+  .mat{margin-top:18px;border:1px solid var(--hair);border-radius:12px;background:#fff;overflow:hidden;}
+  .mat .mat-head{padding:10px 16px;background:rgba(30,58,110,.045);font-size:12.5px;font-weight:700;color:var(--navy);letter-spacing:1px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;}
+  .mat .mat-body{padding:16px;}
+
+  .bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+  .bingo-cell{border:1px solid var(--hair);border-radius:8px;padding:7px 5px;min-height:60px;font-size:10.5px;line-height:1.45;color:var(--ink2);text-align:center;display:flex;flex-direction:column;justify-content:space-between;background:#fff;}
+  .bingo-cell .line{border-top:1px dashed #c8c2b2;margin-top:5px;height:10px;}
+  .matbtn{background:var(--navy);color:#fff;border:1px solid var(--navy);padding:6px 15px;border-radius:100px;cursor:pointer;font-size:11.5px;letter-spacing:1px;transition:all .15s;}
+  .matbtn:hover{background:var(--crimson);border-color:var(--crimson);}
+  .matbtn.ghost{background:transparent;color:var(--ink2);border:1px solid var(--hair);}
+
+  .day24{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px;}
+  .day24 th{background:var(--navy);color:#fff;padding:7px 9px;font-weight:600;font-size:11.5px;text-align:left;letter-spacing:1px;}
+  .day24 td{border:1px solid var(--hair);padding:7px 9px;vertical-align:middle;background:#fff;line-height:1.55;}
+  .day24 td.t{font-weight:700;color:var(--navy);white-space:nowrap;width:82px;}
+  .tag{display:inline-block;font-size:9.5px;font-weight:700;border-radius:9px;padding:1px 7px;}
+  .tag.no{background:#f6f1ea;color:#8a7f6a;}
+  .tag.ok{background:#eef4ee;color:#6a7f63;}
+  .tag.learn{background:#f9ecec;color:var(--crimson);}
+  .fill{display:block;border-bottom:1px dashed #c8c2b2;min-height:15px;}
+
+  .hooks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media(max-width:720px){.hooks{grid-template-columns:1fr;}}
+  .hook{border:1px solid var(--hair);border-radius:10px;padding:10px 12px;background:#fff;border-left:3px solid var(--crimson);}
+  .hook h5{font-size:12.5px;color:var(--navy);margin-bottom:3px;}
+  .hook .why{font-size:11px;color:var(--ink2);line-height:1.6;}
+  .hook .fix{font-size:10.5px;color:var(--crimson);margin-top:5px;line-height:1.5;}
+  .hook .fix::before{content:"破法：";font-weight:700;}
+
+  .step-list{border:1px solid var(--hair);border-radius:10px;overflow:hidden;margin-top:6px;}
+  .step-item{padding:10px 14px;border-bottom:1px solid var(--hair);background:#fff;}
+  .step-item:last-child{border-bottom:none;}
+  .step-item .sn{font-family:"Songti SC",serif;font-weight:700;color:var(--crimson);font-size:12.5px;margin-right:6px;}
+  .step-item b{color:var(--navy);font-size:12.5px;}
+  .step-item p{font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.65;}
+
+  .law-sub{border:1px solid var(--hair);border-radius:10px;margin:8px 0;overflow:hidden;}
+  .law-sub .lh{padding:7px 12px;font-size:12.5px;font-weight:700;color:#fff;display:flex;justify-content:space-between;align-items:center;}
+  .law-sub .lh .en{font-size:9.5px;opacity:.8;font-weight:400;letter-spacing:.5px;}
+  .law-sub .item{padding:6px 12px;font-size:11.5px;color:var(--ink2);line-height:1.6;border-top:1px solid #f3f0e8;}
+  .law-sub .item b{color:var(--ink);}
+  .law-sub .item .d{color:var(--crimson);display:block;font-size:10.5px;margin-top:1px;}
+  .law-sub .item .d::before{content:"📱 ";font-weight:700;}
+  .law-head{margin-top:12px;font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px;}
+
+  .law-quick{border:1px solid var(--hair);border-radius:12px;background:#fff;padding:14px 18px;margin-top:10px;}
+  .law-quick .lq-title{font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:7px;}
+  .law-quick .lq-title.good{color:var(--navy);}
+  .law-quick .lq-title.bad{color:var(--crimson);}
+  .law-quick .lq-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .law-quick .lq-item{flex:1;min-width:110px;border-radius:8px;padding:8px 10px;color:#fff;font-size:12.5px;font-weight:700;text-align:center;letter-spacing:1px;}
+  .law-quick .lq-item.good{background:var(--navy-l);}
+  .law-quick .lq-item.bad{background:var(--crimson);}
+  .law-quick .lq-note{font-size:11px;color:var(--ink2);margin-top:2px;text-align:center;letter-spacing:1px;}
+  .law-quick .lq-note b{color:var(--navy);}
+
+  .chart-head{font-size:13px;margin:10px 0 6px;font-weight:700;color:var(--navy);}
+  .chart-head .ib{display:inline-block;min-width:160px;border-bottom:1.5px solid var(--navy);}
+  .chart-grid{width:100%;border-collapse:collapse;}
+  .chart-grid td{border:1.5px solid var(--hair);height:38px;text-align:center;vertical-align:top;padding:3px;background:#fff;}
+  .chart-grid td .d{font-size:11px;font-weight:700;color:var(--navy);line-height:1;}
+  .chart-grid td .box{width:16px;height:16px;border:1.5px solid #b7b0a0;border-radius:4px;margin:3px auto 0;}
+  .chart-tip{font-size:11px;color:var(--ink2);margin-top:8px;line-height:1.6;}
+  .identity-tpl{background:#fff;border:1px dashed var(--navy);border-radius:10px;padding:10px 14px;font-size:14px;margin-top:6px;}
+  .identity-tpl b{color:var(--navy);}
+  .identity-tpl .ib{display:inline-block;min-width:150px;border-bottom:1.5px solid var(--navy);}
+
+  @media print{
+    body.printing-toolkit .wrap > *:not(#toolkitCard){display:none !important;}
+    body.printing-toolkit nav,body.printing-toolkit .printbar,body.printing-toolkit footer{display:none !important;}
+    #toolkitCard .matbtn{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <span class="b-sub">PARENT WORKSHOP</span>
+    <span class="b-main">家长工作坊</span>
+  </div>
+  <div class="links">
+    <a href="#hero">总览</a>
+    <a href="#act1">活动一</a>
+    <a href="#act2">活动二</a>
+    <a href="#act3">活动三</a>
+    <a href="#act4">活动四</a>
+    <a href="#biblio">书目</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero" id="hero">
+    <div class="eyebrow">PARENT WORKSHOP</div>
+    <div class="rule"></div>
+    <h1>电子产品平衡使用 · 家长工作坊</h1>
+    <div class="sub">原来你也有同样的烦恼 —— 看懂孩子为什么停不下来，一起帮他养成健康的使用习惯</div>
+    <div class="meta">
+      <span>对象：<b>中学家长</b></span>
+      <span>时长：<b>60 分钟</b></span>
+      <span>形式：<b>体验 + 讨论 + 现场工具</b></span>
+    </div>
+    <div class="agenda">
+      <h3>工作坊活动安排 · 60 分钟</h3>
+      <div class="row"><span class="t">① 8 分钟</span>热身 ·「原来你也有同样的烦恼」——家长 BINGO 找同路人</div>
+      <div class="row"><span class="t">② 10 分钟</span>标准 · 孩子的发展心理学 + 一天 24 小时怎么排</div>
+      <div class="row"><span class="t">③ 10 分钟</span>为什么停不下来 · 内部 / 家庭 / 社会三因素</div>
+      <div class="row"><span class="t">④ 22 分钟</span>怎么养成好习惯 · 家庭公约 + 微习惯系统 + 现场填工具卡</div>
+      <div class="row"><span class="t">⑤ 10 分钟</span>收尾 · 念赋能宣言 + 分享「本周我要做的一条」</div>
+    </div>
+  </div>
+
+  <!-- 活动1 -->
+  <div class="sec">
+    <div class="act n1 open" id="act1">
+      <div class="a-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="a-num">1</div>
+        <div class="a-tt"><div class="t">热身 ·「原来你也有同样的烦恼」</div><div class="meta">8 分钟 · 家长 BINGO 找同路人</div></div>
+        <div class="a-ar">›</div>
+      </div>
+      <div class="a-body">
+        <div class="goal">目标：让人觉得不孤独——「管不住」的从来不止我一家，才能放心敞开心扉。</div>
+        <p class="pt">每位家长拿一张 <b>BINGO 卡</b>，起身去认识其他人：找到符合格子描述的家长，请对方在格子里签个名。<b>每个格子必须由不同的人签</b>。先连成一线（横 / 竖 / 斜）就轻声说 BINGO。</p>
+        <div class="mat">
+          <div class="mat-head"><span>BINGO 卡 · 找到那个同路人</span><button class="matbtn ghost" onclick="renderBingo()">换一张新卡（洗牌）</button></div>
+          <div class="mat-body"><div class="bingo-grid" id="bingoGrid"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动2 -->
+  <div class="sec">
+    <div class="act n2" id="act2">
+      <div class="a-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="a-num">2</div>
+        <div class="a-tt"><div class="t">标准 · 孩子的发展心理学 + 一天 24 小时</div><div class="meta">10 分钟 · 先看懂孩子，再谈屏幕</div></div>
+        <div class="a-ar">›</div>
+      </div>
+      <div class="a-body">
+        <div class="goal">目标：建立「健康平衡使用」的标准——先排好生活，再谈屏幕。</div>
+
+        <div class="subhead">孩子的四个发展阶段 · 认知 / 身心 / 社交 × 电子设备</div>
+        <table class="dev-table">
+          <tr><th style="width:78px;">年龄</th><th>认知</th><th>身心</th><th>社交</th><th>电子设备情境</th></tr>
+          <tr><td class="age">0–3 岁<br>婴幼儿</td><td>语言区迅速「髓鞘化」<span class="src">屏幕时代 P13</span></td><td>大运动、感官探索飞速发展</td><td>需要<b>真实的面部互动</b>，屏幕无法替代</td><td>屏幕时间过长会<b>损害髓鞘形成</b>；屏幕 = 0，尽量延迟引入<span class="src">屏幕时代 P13-14</span></td></tr>
+          <tr><td class="age">3–6 岁<br>学龄前</td><td>想象游戏爆发，符号思维萌芽</td><td>大运动关键期，需奔跑跳跃</td><td>同伴游戏萌芽，学习轮流与规则</td><td>屏幕极少，且家长陪同</td></tr>
+          <tr><td class="age">6–12 岁<br>小学</td><td>执行功能、自控力发育中</td><td>睡眠 9–12 小时<span class="src">AASM</span></td><td>同伴关系、规则意识迅速发展</td><td><b>习惯养成黄金期</b>；教育性为主，陪伴使用<span class="src">屏幕时代 第2章</span></td></tr>
+          <tr><td class="age">12–18 岁<br>青少年</td><td><b>前额叶 24–25 岁才成熟</b>，冲动 &gt; 理性<span class="src">屏幕时代 P95</span></td><td>睡眠 8–10 小时，大脑剧烈重塑</td><td>同伴认同需求极强，对「被看见」需求极高</td><td>给自主权 + 边界：像给车钥匙，先陪练再放手</td></tr>
+        </table>
+
+        <div class="subhead">孩子的一天 24 小时怎么排</div>
+        <p class="pt">把<b>睡眠 7–8 小时（青少年建议 8–10）</b>、早饭、上学、放学、作业、睡前逐格排进 24 小时，每格标注屏幕是否可用，家长在「我家实际安排」栏填真实情况。<b>算一笔账：</b>睡眠 + 上学 + 作业 + 家庭生活之后，真正自由支配的只有 <b>约 1 小时</b>——屏幕只能从自由时间里分，不能从睡眠、作业、家庭里抢。</p>
+        <div class="mat">
+          <div class="mat-head"><span>24 小时工作纸（可打印填写）</span></div>
+          <div class="mat-body">
+            <table class="day24">
+              <tr><th style="width:82px;">时段</th><th>这个时间在做什么</th><th style="width:96px;">屏幕？</th><th>我家的实际安排</th></tr>
+              <tr><td class="t">22:00–7:00</td><td><b>睡眠 7–8 小时</b>（青少年建议 8–10，AASM）</td><td><span class="tag no">✗ 不放</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">7:00–7:30</td><td>起床 · 早饭</td><td><span class="tag no">✗ 建议</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">7:30–16:00</td><td>上学</td><td><span class="tag no">✗ 校规</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">16:00–17:00</td><td>放学后 · 运动 / 同伴 / 兴趣</td><td><span class="tag ok">✓ 15–20'</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">17:00–19:00</td><td>作业 · 晚饭</td><td><span class="tag learn">△ 学习用</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">19:00–20:30</td><td>家庭时间 · 面对面</td><td><span class="tag no">✗ 不放</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">20:30–21:30</td><td><b>自由时间（屏幕主窗口）</b></td><td><span class="tag ok">✓ 30–40'</span></td><td><span class="fill"></span></td></tr>
+              <tr><td class="t">21:30–22:00</td><td>洗漱 · 睡前（睡前 1 小时无屏幕）</td><td><span class="tag no">✗ 不放</span></td><td><span class="fill"></span></td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="redflags">
+          <h4><span class="flag-ic">🚩</span> 红旗警示信号 · 出现这些，说明电子设备使用可能已经失衡</h4>
+          <div class="flag-grid">
+            <div class="flag"><div class="fh">身体方面</div>
+              <ul>
+                <li>睡眠被挤占：熬夜刷屏、早上起不来，睡不够 8–10 小时<span class="src">屏幕时代 P42</span></li>
+                <li>眼睛干涩、频繁揉眼、视力明显下降<span class="src">屏幕时代 P14</span></li>
+                <li>久坐不动：体重变化、颈椎酸痛「短信颈」<span class="src">屏幕时代 P18</span></li>
+                <li>忘记吃饭、喝水，甚至憋尿不肯离开屏幕</li>
+              </ul>
+            </div>
+            <div class="flag"><div class="fh">心理方面</div>
+              <ul>
+                <li>拿不到屏幕就烦躁、易怒、焦虑（戒断反应）<span class="src">屏幕时代 P74</span></li>
+                <li>需要越来越长时间才满足（耐受）<span class="src">屏幕时代 P74</span></li>
+                <li>用完感觉空虚、内疚、更糟<span class="src">屏幕时代 P197</span></li>
+                <li>对现实爱好失去兴趣，只想刷屏</li>
+                <li>撒谎、隐瞒真实使用时间</li>
+              </ul>
+            </div>
+            <div class="flag"><div class="fh">社交方面</div>
+              <ul>
+                <li>现实朋友越来越少，朋友「只在网上」<span class="src">屏幕时代 P149</span></li>
+                <li>吃饭、和家人聊天时也放不下屏幕</li>
+                <li>因「怕错过」而焦虑、不敢下线（FOMO）<span class="src">屏幕时代 P51</span></li>
+                <li>网上卷入冲突/被霸凌，或与陌生人过度交流</li>
+                <li>拒绝线下活动，逃避面对面场合</li>
+              </ul>
+            </div>
+          </div>
+          <div class="flag-note">出现任意 2–3 条红旗，就值得停下来和孩子一起回到「24 小时」重新排；持续多条、且越来越严重，建议寻求学校心理老师或专业帮助。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动3 -->
+  <div class="sec">
+    <div class="act n3" id="act3">
+      <div class="a-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="a-num">3</div>
+        <div class="a-tt"><div class="t">为什么停不下来 · 三个因素</div><div class="meta">10 分钟 · 不是孩子意志力差，是三股力量在拉扯</div></div>
+        <div class="a-ar">›</div>
+      </div>
+      <div class="a-body">
+        <div class="goal">目标：把「孩子贪玩、意志力差」的责备，换成「原来是三股力量在拉扯」的理解。</div>
+        <div class="factor">
+          <div class="f int"><h4>内部因素 · 孩子自身</h4>
+            <ul>
+              <li>大脑还没长好：前额叶到 <b>24–25 岁才成熟</b><span class="s">〔屏幕时代 P95-96〕</span></li>
+              <li>大脑偏爱<b>新颖、冒险、同伴赞赏</b><span class="s">〔屏幕时代 P6〕</span></li>
+              <li>多巴胺在「渴望」阶段释放<span class="s">〔掌控习惯 第8章〕</span></li>
+            </ul>
+          </div>
+          <div class="f fam"><h4>家庭因素 · 环境与榜样</h4>
+            <ul>
+              <li>父母<b>双标</b>：自己刷不停却要求孩子<span class="s">〔屏幕时代 P44〕</span></li>
+              <li>环境设计缺失：手机随手可得<span class="s">〔掌控习惯 第6章〕</span></li>
+              <li>用科技当<b>情绪安抚剂</b><span class="s">〔屏幕时代 第2章〕</span></li>
+              <li>缺共识公约<span class="s">〔鼎石协议〕</span></li>
+            </ul>
+          </div>
+          <div class="f soc"><h4>社会因素 · 设计与同伴</h4>
+            <ul>
+              <li>科技公司的<b>成瘾设计</b>：可变奖励、无限下拉、点赞循环、通知轰炸<span class="s">〔屏幕时代 P48-56〕</span></li>
+              <li><b>6 大上瘾钩子</b><span class="s">〔欲罢不能〕</span></li>
+              <li>同伴压力 FOMO：怕错过、怕被孤立<span class="s">〔屏幕时代 P51〕</span></li>
+              <li>注意力经济：数据 = 新石油<span class="s">〔屏幕时代 第1章〕</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="subhead">科技公司的成瘾设计 · 12 张钩子卡</div>
+        <div class="mat">
+          <div class="mat-head"><span>看懂这 12 招，你就懂了孩子为什么停不下来</span></div>
+          <div class="mat-body"><div class="hooks" id="hooksGrid"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动4 -->
+  <div class="sec">
+    <div class="act n4" id="act4">
+      <div class="a-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="a-num">4</div>
+        <div class="a-tt"><div class="t">怎么养成好习惯 · 公约 + 微习惯系统</div><div class="meta">22 分钟 · 大方向定公约，小步子建系统</div></div>
+        <div class="a-ar">›</div>
+      </div>
+      <div class="a-body">
+        <div class="goal">目标：从「定身份」开始，走完整个习惯养成周期，让家长带走一套可执行的微习惯系统 + 打卡表。</div>
+
+        <div class="subhead">第一步 · 大方向：家庭电子设备公约（7 个话题）</div>
+        <div class="step-list" id="agreeList"></div>
+
+        <div class="subhead">第二步 · 小步子：微习惯养成系统（六步周期）</div>
+        <div class="step-list" id="cycleList"></div>
+        <p class="pt"><b>核心心法：</b>「问题不在孩子，在于系统」——你不会达到目标的高度，只会跌到系统的水平。<span class="src">掌控习惯</span></p>
+
+        <div class="subhead">四定律 · 完整系统</div>
+        <div class="law-quick">
+          <div class="lq-title good">养成好习惯 · 正四定律</div>
+          <div class="lq-row">
+            <div class="lq-item good">让它显而易见</div>
+            <div class="lq-item good">让它有吸引力</div>
+            <div class="lq-item good">让它简便易行</div>
+            <div class="lq-item good">让它令人愉悦</div>
+          </div>
+          <div class="lq-title bad">戒掉坏习惯 · 反转四定律</div>
+          <div class="lq-row">
+            <div class="lq-item bad">让它看不见</div>
+            <div class="lq-item bad">让它没吸引力</div>
+            <div class="lq-item bad">让它难做到</div>
+            <div class="lq-item bad">让它不满意</div>
+          </div>
+          <div class="lq-note"><b>养好习惯用正四定律；戒坏习惯用反转四定律。</b></div>
+        </div>
+        <div class="law-head">养成好习惯 · 四定律（15 条）</div>
+        <div id="lawsGrid"></div>
+        <div class="law-head">戒掉坏习惯 · 反转四定律（7 条）</div>
+        <div id="badlawsGrid"></div>
+
+        <div class="subhead">第三步 · 现场工具：填完带走（30 天打卡表）</div>
+        <div class="mat" id="toolkitCard">
+          <div class="mat-head"><span>我的微习惯计划 + 打卡表</span><button class="matbtn" onclick="document.body.classList.add('printing-toolkit');window.print();document.body.classList.remove('printing-toolkit');">🖨 单独打印这张</button></div>
+          <div class="mat-body">
+            <div class="identity-tpl">我是一个 <span class="ib"></span> 的人。</div>
+            <div class="chart-head">我的微习惯（每天，小到不可能失败）：<span class="ib"></span></div>
+            <div id="chartBox"></div>
+            <div class="chart-tip">✅ = 做到了底线（哪怕只做了一下）。<b>漏一天没关系，别漏两次</b>——留空第二天接着勾。孩子签名：＿＿＿＿　家长签名：＿＿＿＿　日期：＿＿＿＿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 书目索引 -->
+  <div class="sec" id="biblio">
+    <div class="sec-head" style="text-align:center;margin-bottom:14px;">
+      <div class="eyebrow">REFERENCES</div>
+      <h2 style="font-family:'Songti SC',serif;font-size:24px;margin:6px 0;">书目与资料索引</h2>
+    </div>
+    <div class="biblio">
+      <div class="b"><b>1. 《屏幕时代，重塑孩子的自控力》</b> 希米·康（Dr. Shimi Kang）· 上海社会科学院出版社 2023<br><span class="used">用于：活动2 大脑发育 / 活动3 内部因素、成瘾设计（可变奖励、点赞循环、FOMO、注意力经济）</span></div>
+      <div class="b"><b>2. 《掌控习惯》Atomic Habits</b> 詹姆斯·克利尔（James Clear）· 北京联合出版公司<br><span class="used">用于：活动4 六步周期、四定律、习惯追踪 / 活动3 多巴胺渴望阶段</span></div>
+      <div class="b"><b>3. 《欲罢不能》</b> 亚当·阿尔特（Adam Alter）<br><span class="used">用于：活动3 社会因素 · 6 大上瘾钩子</span></div>
+      <div class="b"><b>4. 鼎石学校《家庭电子产品使用协议》</b>（Family Tech Agreement）<br><span class="used">用于：活动4 家庭公约七话题 / 活动3 家庭因素</span></div>
+      <div class="b"><b>5. 美国睡眠医学学会（AASM）睡眠建议</b><br><span class="used">用于：活动2 各年龄段睡眠时长</span></div>
+      <div class="b"><b>6. Dr. Shimi Kang「My Tech Diet」工作单</b><br><span class="used">用于：活动2/4 三类科技（有害/糖分/健康）+「用后感受」判断标准</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <b>电子产品平衡使用 · 家长工作坊</b> · 60 分钟 · 四场活动<br>
+    教育科技创新教师 张宁 &amp; 心理辅导老师 韦明珠 联合主讲<br>
+    目标不是让孩子远离科技，而是陪他们学会更自主、更平衡、更健康地使用科技。
+  </footer>
+</div>
+
+<div class="printbar"><button onclick="window.print()">🖨 打印 / 存 PDF</button></div>
+
+<script>
+/* ===== 数据 ===== */
+const BINGO_ST=[
+ '自己也刷短视频刷到过停不下来','因为「再玩五分钟」和孩子拉锯过','立过屏幕规矩但没坚持几天',
+ '睡前会忍不住看手机','担心孩子用 AI 写作业','孩子吃饭时也放不下手机',
+ '说过「我小时候也总想玩」','觉得家长自己也得少刷手机','和孩子因为手机吵过架',
+ '不知道孩子在网上和谁聊天','试过没收手机，但效果不好','孩子房间里有平板或电脑',
+ '担心孩子的睡眠被屏幕挤掉','晚上全家手机在卧室充电','孩子有游戏的连胜或段位',
+ '自己也设过屏幕使用时间','孩子说过「同学都有手机」','想过「完全禁止」又觉得不现实',
+ '孩子写作业时手机就在旁边','周末想出去却各自刷屏','听过孩子说「再一局就停」',
+ '家里还没有正式的屏幕公约','担心孩子的视力下降','孩子用视频通话和长辈联系',
+ '愿意和孩子一起改一条习惯'
+];
+
+const HOOKS=[
+ {t:'老虎机效应',pg:'P54',why:'斯金纳的鸽子：奖励不按固定时间出现，反而让人更疯狂。刷新、抽卡、开箱就是这招，多巴胺狂飙。',fix:'把「随机惊喜」换成固定时间的真实活动。'},
+ {t:'点赞 · 反馈循环',pg:'P48',why:'点赞是「社交肯定的提示音」，发帖→点赞→想再发。孩子开始用点赞数衡量自己的价值。',fix:'教孩子「点赞≠价值」，补足线下真实的认可。'},
+ {t:'无限下拉 · 没有终点',pg:'P72',why:'内容永远加载不完，没有「结束」的信号，说好看 10 分钟就滑了 1 小时。',fix:'给孩子外在终点：「看到第 N 条就停」。'},
+ {t:'通知轰炸 · 已读回执',pg:'P52,56',why:'红点、提示音利用「社交相互性」，不回复显得失礼，孩子被一次次拽回手机。',fix:'关掉非必要通知，设固定查看时间。'},
+ {t:'自动播放',pg:'P72',why:'一个视频结束自动接下一个，不给你「要不要停」的决策点。',fix:'关闭自动连播，每次播放都要主动点击。'},
+ {t:'升级 · 连胜 · 排位',pg:'P47,86',why:'硬币、现金箱、段位、连胜——精心策划的奖励刺激多巴胺，「差一局」正是设计。',fix:'读懂「差一点」，用真实成就替代虚拟段位。'},
+ {t:'发帖后的焦虑',pg:'P53',why:'发帖后焦虑等点赞，没人点赞就难堪——像「老虎机+人气榜」。',fix:'少发多聊，真朋友私下联系。'},
+ {t:'FOMO · 怕错过',pg:'P51',why:'「朋友都上线了，我不上像被抛弃」——用归属感把你焊在屏幕上。',fix:'帮孩子在线下找到真实归属。'},
+ {t:'数据 = 新石油',pg:'第1章',why:'免费 App 靠卖数据和注意力赚钱。你的注意力就是产品。',fix:'让孩子明白「免费」的代价。'},
+ {t:'偏爱新颖性',pg:'P6',why:'青少年大脑天生偏爱新颖、冒险、同伴赞赏，产品照着这套「源代码」设计。',fix:'理解这是发育，用新奇的真实活动替代。'},
+ {t:'肖恩·帕克的告白',pg:'P69',why:'Facebook 创始总裁承认：设计初衷是「占据最多时间」，漏洞在于人脑。乔布斯、盖茨都限制自己孩子。',fix:'连设计者都在限制孩子，你也可以。'},
+ {t:'悬念与红点',pg:'P6,51',why:'未读、剧集悬念制造「未完成」的焦虑，孩子总想「看完这一集」「清掉红点」。',fix:'接受「未完成」，主动留悬念。'}
+];
+
+const LAWS=[
+ {n:'第一定律 · 让它显而易见',en:'Make it obvious',c:'#2e5290',items:[
+  {m:'记录你现有的习惯，觉察它们',d:'列出孩子一天里所有碰屏幕的行为'},
+  {m:'执行意图「我将在[时间]在[地点]做[行为]」',d:'「晚上 8:30 在客厅和奶奶视频 10 分钟」'},
+  {m:'习惯叠加「在[当前习惯]之后做[新习惯]」',d:'「做完作业后，用平板读 15 分钟电子书」'},
+  {m:'设计环境，让提示清晰可见',d:'学习 App 放首屏、平板摊书桌、充电站卧室外'}]},
+ {n:'第二定律 · 让它有吸引力',en:'Make it attractive',c:'#2e5290',items:[
+  {m:'诱惑捆绑：想做的事 + 需要做的事',d:'记单词 App 时才能听最喜欢的歌单'},
+  {m:'加入「想要的行为是常态」的群体',d:'编程学习群、在线读书打卡群'},
+  {m:'激励仪式：困难前先做喜欢的事',d:'在线学习前深呼吸、整理书桌'}]},
+ {n:'第三定律 · 让它简便易行',en:'Make it easy',c:'#2e5290',items:[
+  {m:'减少阻力',d:'平板充电器插书桌边，学习 App 免登录'},
+  {m:'预先准备环境',d:'睡前打开第二天的在线课页面'},
+  {m:'把握关键决策点',d:'进门那一刻手机放玄关、写作业前手机交出'},
+  {m:'两分钟法则',d:'「我只打开学习 App 做一道题」'},
+  {m:'自动化习惯',d:'设屏幕使用时间上限、健康使用提醒'}]},
+ {n:'第四定律 · 让它令人愉悦',en:'Make it satisfying',c:'#2e5290',items:[
+  {m:'即时强化',d:'每完成一次健康使用，就贴一颗星'},
+  {m:'习惯追踪器，别断链',d:'打卡表记录连续天数'},
+  {m:'绝不错过两次',d:'昨天没做到，今天立刻接上'}]}
+];
+const BADLAWS=[
+ {n:'反用第一定律 · 让它不可见',en:'Make it invisible',c:'#a02c2c',items:[
+  {m:'减少接触，移除触发线索',d:'删掉最上瘾的 App、灰度屏幕、手机放抽屉'}]},
+ {n:'反用第二定律 · 让它失去吸引力',en:'Make it unattractive',c:'#a02c2c',items:[
+  {m:'重构思维，强调停止的好处',d:'「每刷一分钟，就偷走一分钟未来的自己」，把刷完的疲惫写下来贴书桌'}]},
+ {n:'反用第三定律 · 让它难以施行',en:'Make it difficult',c:'#a02c2c',items:[
+  {m:'增加阻力',d:'用 Forest/Freedom，密码由家长设置'},
+  {m:'承诺机制',d:'向老师宣布 30 天「不刷视频」挑战'}]},
+ {n:'反用第四定律 · 让它令人不悦',en:'Make it unsatisfying',c:'#a02c2c',items:[
+  {m:'问责伙伴',d:'好友每天检查，破例就「欠」一条手写知识'},
+  {m:'习惯契约',d:'和家长签协议，重装 App 就捐一周零花钱'},
+  {m:'让「无所事事」愉快',d:'记录「今天没刷视频，多出的 40 分钟」去了哪'}]}
+];
+
+const CYCLE=[
+ {n:'①',t:'定身份',p:'不要问「你要什么结果」，问「你想成为什么样的人」——「我是一个能管好自己屏幕的人」。'},
+ {n:'②',t:'投第一票',p:'把新习惯缩到两分钟内能完成，小到不可能失败：「睡前把手机放进客厅充电站」。'},
+ {n:'③',t:'搭系统',p:'用四定律让好习惯自动发生：你不是监督者，是环境设计师。'},
+ {n:'④',t:'追踪',p:'睡前打钩，别断链；漏一天没关系，别漏两次。'},
+ {n:'⑤',t:'内化',p:'习惯养成四信号：不再抵触 /「这就是我」/ 无需思考 / 不再担心做不到。'},
+ {n:'⑥',t:'升级',p:'一个习惯稳固后，定下一个身份、下一个微习惯，进入新一轮循环。'}
+];
+
+const AGREE=[
+ {n:'1',t:'时间与地点',p:'设备在公共空间使用、不关门；共同定晚上关机时间；卧室外设充电站。'},
+ {n:'2',t:'如何跟进（奖与惩）',p:'约定「出色使用」和「不当使用」各自的后果，全家共识。'},
+ {n:'3',t:'使用与监督',p:'家长负责监督校外使用，可随时检查设备。'},
+ {n:'4',t:'隐私与密码',p:'家长掌握账号密码，监督网络交流，孩子不得装 VPN。'},
+ {n:'5',t:'在线安全',p:'不向陌生人透露信息，创建账户须家长同意，遇不当内容立即汇报。'},
+ {n:'6',t:'保养与维修',p:'放保护袋、双手持机、防水防摔，明确损坏后怎么办。'},
+ {n:'7',t:'数字公民意识',p:'不乱发信息、传图须同意、不用伤害性语言、为被霸凌者挺身而出。'}
+];
+
+/* ===== 渲染 ===== */
+function el(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function renderBingo(){
+  const grid=document.getElementById('bingoGrid');
+  const arr=shuffle(BINGO_ST).slice(0,25);
+  grid.innerHTML='';
+  arr.forEach(s=>{
+    const c=el('div','bingo-cell');
+    c.appendChild(el('div','',s));
+    c.appendChild(el('div','line'));
+    grid.appendChild(c);
+  });
+}
+function renderHooks(){
+  const g=document.getElementById('hooksGrid');
+  HOOKS.forEach(h=>{
+    const d=el('div','hook');
+    d.appendChild(el('h5','',h.t+' <span style="color:#9aa3b2;font-size:9px;">'+h.pg+'</span>'));
+    d.appendChild(el('div','why',h.why));
+    d.appendChild(el('div','fix',h.fix));
+    g.appendChild(d);
+  });
+}
+function renderLaws(boxId,arr){
+  const box=document.getElementById(boxId);
+  arr.forEach(L=>{
+    const lw=el('div','law-sub');
+    lw.appendChild(el('div','lh',L.n+'<span class="en">'+L.en+'</span>')).style.background=L.c;
+    L.items.forEach(it=>{
+      lw.appendChild(el('div','item','<b>'+it.m+'</b><span class="d">'+it.d+'</span>'));
+    });
+    box.appendChild(lw);
+  });
+}
+function renderList(boxId,arr){
+  const box=document.getElementById(boxId);
+  arr.forEach(it=>{
+    const d=el('div','step-item');
+    d.appendChild(el('span','sn',it.n));
+    const b=el('b','',it.t);
+    d.appendChild(b);
+    if(it.p)d.appendChild(el('p','',it.p));
+    box.appendChild(d);
+  });
+}
+function renderChart(){
+  const box=document.getElementById('chartBox');
+  const tbl=el('table','chart-grid');
+  for(let r=0;r<5;r++){
+    const tr=el('tr');
+    for(let c=0;c<6;c++){
+      const td=el('td');
+      td.appendChild(el('div','d',r*6+c+1));
+      td.appendChild(el('div','box'));
+      tr.appendChild(td);
+    }
+    tbl.appendChild(tr);
+  }
+  box.appendChild(tbl);
+}
+
+renderBingo();
+renderHooks();
+renderLaws('lawsGrid',LAWS);
+renderLaws('badlawsGrid',BADLAWS);
+renderList('cycleList',CYCLE);
+renderList('agreeList',AGREE);
+renderChart();
+</script>
+</body>
+</html>
